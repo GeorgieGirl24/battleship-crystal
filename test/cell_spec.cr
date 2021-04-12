@@ -46,22 +46,22 @@ describe Cell do
       cell = Cell.new("B4")
       cruiser = Ship.new("Cruiser", 3)
 
-      # cell.fired_upon.should eq false
-      # cell.fired_upon.should_not eq true
+      cell.fired_upon?.should eq false
+      cell.fired_upon?.should_not eq true
     end
 
     it "can be fired upon and that takes away the health of the ship" do
       cell = Cell.new("B4")
+      cell_2 = Cell.new("B3")
       cruiser = Ship.new("Cruiser", 3)
 
       cell.place_ship(cruiser)
-      p cell.ship
-      p cruiser.health
-      cell.fired_upon
+      cell.fire_upon
       cell.empty?.should eq false
-      p cell.coordinate
-      p cell.ship
-      # cell.ship.health.should eq 2
+      cell_2.empty?.should eq true
+      ship_cell = cell.ship
+      cruiser.sunk.should eq false
+      cruiser.health.should eq 2
     end
 
     it "can only decrease the health of the ship by one with every hit" do

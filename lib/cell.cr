@@ -1,11 +1,16 @@
+# require "./ship"
 class Cell
   getter coordinate : String
+  property coordinate
+  # getter ship : Ship
   # getter ship : Nil | Ship
-  getter ship : Ship?
+  property ship
+  setter ship : Ship?
   getter fired_upon : Bool
+  # property fired_upon
 
-  def initialize(coordinate)
-    @coordinate = coordinate
+  def initialize(@coordinate : String)
+    # @coordinate = coordinate
     @ship = nil
     @fired_upon = false
   end
@@ -22,12 +27,11 @@ class Cell
     @fired_upon
   end
 
-  def fired_upon
-    # debugger
-    # @ship
-    if @ship != nil
-      # @ship.hit
-      # print @ship
+  def fire_upon
+    if !@ship.nil?
+      if s = @ship
+        s.hit
+      end
     end
     @fired_upon = true
   end
