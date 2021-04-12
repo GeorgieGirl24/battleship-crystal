@@ -1,16 +1,10 @@
-# require "./ship"
 class Cell
-  getter coordinate : String
   property coordinate
-  # getter ship : Ship
-  # getter ship : Nil | Ship
   property ship
   setter ship : Ship?
   getter fired_upon : Bool
-  # property fired_upon
 
   def initialize(@coordinate : String)
-    # @coordinate = coordinate
     @ship = nil
     @fired_upon = false
   end
@@ -34,5 +28,21 @@ class Cell
       end
     end
     @fired_upon = true
+  end
+
+  def render(visible=false)
+      if !empty? && !fired_upon? && visible == true
+        "S"
+      elsif s = @ship
+        if !empty? && s.sunk? && fired_upon?
+          "X"
+        elsif !empty? && fired_upon? && !s.sunk?
+          "H"
+        end
+      elsif empty? && fired_upon?
+        "M"
+      elsif empty? || !fired_upon?
+        "."
+      end
   end
 end
