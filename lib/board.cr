@@ -3,7 +3,7 @@ class Board
   setter = @rows : Array
   setter = @columns : Array
 
-  def initialize
+  def initialize(board_size=4)
     @rows = Array(Int32).new
     @columns = Array(String).new
     @cells = Hash(String, Cell).new
@@ -34,11 +34,15 @@ class Board
     @cells.keys.includes?(coordinate)
   end
 
+  def all_valid_coordinates?(coordinates)
+    coordinates.all? do |coordinate|
+      valid_coordinate?(coordinate)
+    end
+  end
+
   def valid_placement?(ship, coordinates)
-    # (coordinates.all? do |coordinate|
-    #   valid_coordinate?(coordinate)
-    # end) &&
     coordinate_equal?(ship, coordinates) &&
+    all_valid_coordinates?(coordinates) &&
     not_overlapping?(coordinates) &&
     (valid_numbers?(coordinates) || valid_letters?(coordinates))
   end
@@ -71,7 +75,7 @@ class Board
 
   def find_digits(coordinates)
     coordinates.map do |coordinate|
-      coordinate[1].to_i
+      coordinate.delete(coordinate[0]).to_i
     end
   end
 
@@ -85,12 +89,11 @@ class Board
   end
 
   def make_letters_ord_numbers
-    nums = @columns.map do |letter|
+    @columns.map do |letter|
       letter.chars.map do |char|
         char.ord
       end
-    end
-    nums.flatten
+    end.flatten
   end
 
   def valid_numbers?(coordinates)
