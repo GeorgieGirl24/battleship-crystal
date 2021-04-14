@@ -273,4 +273,75 @@ describe Board do
       board.valid_coordinate?("F1").should eq false
     end
   end
+
+  describe "ships can be placed on a board" do
+    it "can place a cruiser" do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+
+      cruiser_placement = ["A1", "A2", "A3"]
+
+      board.place(cruiser, cruiser_placement).should eq [cruiser, cruiser, cruiser]
+      board.place(cruiser, cruiser_placement).should_not eq [cruiser, cruiser]
+      board.place(cruiser, cruiser_placement).should_not eq [submarine, submarine, submarine]
+    end
+
+    it "can place a submarine" do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+
+      submarine_placement = ["D2", "D3"]
+
+      board.place(submarine, submarine_placement).should eq [submarine, submarine]
+      board.place(submarine, submarine_placement).should_not eq [cruiser, cruiser]
+      board.place(submarine, submarine_placement).should_not eq [submarine, submarine, submarine]
+    end
+  end
+
+  describe "render board" do
+    it "can render current board" do
+      board = Board.new
+
+      show_board = " 1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n"
+      board.render.should eq show_board
+    end
+
+    it "can render a board with two ships placed and not show the ships" do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+
+      cruiser_placement = ["A1", "A2", "A3"]
+      submarine_placement = ["D2", "D3"]
+
+      board.place(cruiser, cruiser_placement)
+      board.place(submarine, submarine_placement)
+
+      show_board = " 1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n"
+      show_board_visible = " 1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . S S . \n"
+
+      board.render.should eq show_board
+      board.render.should_not eq show_board_visible
+    end
+
+    it "can render a board with two ships placed and show the ships" do
+      board = Board.new
+      cruiser = Ship.new("Cruiser", 3)
+      submarine = Ship.new("Submarine", 2)
+
+      cruiser_placement = ["A1", "A2", "A3"]
+      submarine_placement = ["D2", "D3"]
+
+      board.place(cruiser, cruiser_placement)
+      board.place(submarine, submarine_placement)
+
+      show_board = " 1 2 3 4 \nA S S S . \nB . . . . \nC . . . . \nD . S S . \n"
+      show_board_not_visible = " 1 2 3 4 \nA . . . . \nB . . . . \nC . . . . \nD . . . . \n"
+
+      board.render(true).should eq show_board
+      board.render(true).should_not eq show_board_not_visible
+    end
+  end
 end
