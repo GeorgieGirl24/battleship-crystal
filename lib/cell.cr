@@ -34,10 +34,12 @@ class Cell
       if !empty? && !fired_upon? && visible == true
         "S"
       elsif s = @ship
-        if !empty? && s.sunk? && fired_upon?
+        if !empty? && s.sunk? && fired_upon? && visible == true
           "X"
-        elsif !empty? && fired_upon? && !s.sunk?
+        elsif !empty? && fired_upon? && !s.sunk? && visible == true
           "H"
+        else
+          "."
         end
       elsif empty? && fired_upon?
         "M"
