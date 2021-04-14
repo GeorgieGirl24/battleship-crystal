@@ -37,6 +37,11 @@ describe Computer do
       board.place(cruiser, cruiser_coordinates).should_not eq [cruiser, cruiser, cruiser, cruiser]
       board.place(cruiser, cruiser_coordinates).should_not eq [cruiser, cruiser]
       board.place(cruiser, cruiser_coordinates).should_not eq [submarine, submarine, submarine]
+
+      computer.place_cruiser.size.should eq 3
+      computer.place_cruiser.size.should_not eq 2
+      computer.place_cruiser.size.should_not eq 4
+      computer.place_cruiser.class.should eq Array(String)
     end
 
     it "can place a submarine"do
@@ -54,7 +59,11 @@ describe Computer do
     board.place(submarine, submarine_coordinates).should_not eq [submarine, submarine, submarine, submarine]
     board.place(submarine, submarine_coordinates).should_not eq [submarine, submarine, submarine]
     board.place(submarine, submarine_coordinates).should_not eq [cruiser, cruiser]
-    end
 
+    computer.place_submarine.size.should eq 2
+    computer.place_submarine.size.should_not eq 3
+    computer.place_submarine.size.should_not eq 1
+    computer.place_submarine.class.should eq Array(String)
+    end
   end
 end
